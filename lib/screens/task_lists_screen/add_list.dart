@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../theme/colors.dart';
+
 import '../../utils/firestore_utils.dart' as firestore;
 
 class AddList extends StatefulWidget {
@@ -9,11 +11,18 @@ class AddList extends StatefulWidget {
 
 class _AddListState extends State<AddList> {
   String _listName = '';
+  String _error;
 
-  void _onSubmitted(String value) {
+  void _onSubmitted(String value) async {
     setState(() {
       _listName = value;
     });
+
+    try {
+      firestore.addDocument('task-lists', {'listName': _listName});
+    } catch (e) {
+      print(e);
+    }
 
     Navigator.pop(context);
   }
@@ -24,19 +33,25 @@ class _AddListState extends State<AddList> {
     showDialog(
         context: context,
         builder: (BuildContext context) => SimpleDialog(
-              title: Text('Give your list a name'),
+              title: Container(),
               children: <Widget>[
                 Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: Column(
                       children: <Widget>[
                         TextField(
                           autofocus: true,
-                          decoration: InputDecoration(
-                            isDense: true,
-                          ),
                           onSubmitted: _onSubmitted,
                           onChanged: _onChanged,
+                          cursorColor: purple,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: purple, width: 0.0),
+                            ),
+                            labelText: 'List Name',
+                            labelStyle: TextStyle(color: purple),
+                          ),
                         ),
                         SizedBox(
                           height: 10.0,
@@ -51,7 +66,7 @@ class _AddListState extends State<AddList> {
                                 fontSize: 18.0,
                               ),
                             ),
-                            color: Theme.of(context).primaryColor,
+                            color: purple,
                             onPressed: () => _onSubmitted(_listName),
                           ),
                         )
@@ -85,7 +100,7 @@ class _AddListState extends State<AddList> {
             ),
             SizedBox(height: 10.0),
             Text(
-              'Add List',
+              'Add list',
               style: TextStyle(
                 fontSize: 12.0,
                 color: Colors.grey[400],

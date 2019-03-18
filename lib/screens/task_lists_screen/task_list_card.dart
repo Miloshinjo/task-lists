@@ -9,13 +9,6 @@ class TaskListCard extends StatelessWidget {
 
   TaskListCard(this.title, this.backgroundColor, this.tasks);
 
-  // final List<Map<String, dynamic>> tasks = [
-  //   {'body': 'Book Flights', 'completed': false},
-  //   {'body': 'Passport check', 'completed': true},
-  //   {'body': 'Walk the dog', 'completed': false},
-  //   {'body': 'Hotel reservations', 'completed': true}
-  // ];
-
   @override
   Widget build(BuildContext context) {
     return Container(
