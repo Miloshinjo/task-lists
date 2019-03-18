@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import './draw_horizontal_line.dart';
 import './bottom_bar.dart';
 import './task_lists.dart';
+import './add_list.dart';
 
 class TaskListsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       bottomNavigationBar: BottomBar(),
       body: Column(
         children: <Widget>[
@@ -56,41 +58,7 @@ class TaskListsScreen extends StatelessWidget {
             ],
           ),
           SizedBox(height: 30.0),
-          InkWell(
-            splashColor: Colors.grey[100],
-            borderRadius: BorderRadius.all(Radius.circular(4.0)),
-            onTap: () {
-              print('Tapped!');
-            },
-            child: Container(
-              padding: EdgeInsets.all(20.0),
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    width: 40.0,
-                    height: 40.0,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey[300]),
-                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                    ),
-                    child: Icon(
-                      Icons.add,
-                      size: 15.0,
-                    ),
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(
-                    'Add List',
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      color: Colors.grey[400],
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
+          AddList(),
           SizedBox(height: 20.0),
           TaskLists(),
         ],

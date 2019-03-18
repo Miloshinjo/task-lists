@@ -5,15 +5,16 @@ import './task.dart';
 class TaskListCard extends StatelessWidget {
   final String title;
   final Color backgroundColor;
+  final List<dynamic> tasks;
 
-  TaskListCard(this.title, this.backgroundColor);
+  TaskListCard(this.title, this.backgroundColor, this.tasks);
 
-  final List<Map<String, dynamic>> tasks = [
-    {'id': 1, 'body': 'Book Flights', 'completed': false},
-    {'id': 2, 'body': 'Passport check', 'completed': true},
-    {'id': 3, 'body': 'Walk the dog', 'completed': false},
-    {'id': 4, 'body': 'Hotel reservations', 'completed': true}
-  ];
+  // final List<Map<String, dynamic>> tasks = [
+  //   {'body': 'Book Flights', 'completed': false},
+  //   {'body': 'Passport check', 'completed': true},
+  //   {'body': 'Walk the dog', 'completed': false},
+  //   {'body': 'Hotel reservations', 'completed': true}
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -24,15 +25,24 @@ class TaskListCard extends StatelessWidget {
         elevation: 2.0,
         child: Column(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 30.0),
-              child: Text(
-                title,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w600,
-                ),
+            Container(
+              width: double.infinity,
+              height: 50.0,
+              margin: EdgeInsets.only(top: 15.0, left: 21.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Spacer(),
+                  Text(
+                    title,
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
             ),
             Container(

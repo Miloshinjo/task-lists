@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import './task_list_card.dart';
 import '../../theme/colors.dart';
-
-List<Widget> _mockedTaskListItems = [
-  TaskListCard('My Tasks', listColors[0]),
-  TaskListCard('Flutter Tasks', listColors[1]),
-  TaskListCard('Shopping List', listColors[2]),
-  TaskListCard('Shopping List', listColors[3]),
-  TaskListCard('Shopping List', listColors[4]),
-  TaskListCard('Shopping List', listColors[5]),
-];
 
 class TaskLists extends StatelessWidget {
   @override
@@ -18,9 +11,26 @@ class TaskLists extends StatelessWidget {
     return Expanded(
       child: Container(
         margin: EdgeInsets.only(bottom: 20.0),
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: _mockedTaskListItems,
+        child: StreamBuilder(
+          stream: Firestore.instance.collection('task-lists').snapshots(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (!snapshot.hasData) return CircularProgressIndicator();
+
+            return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: snapshot.data.documents.length,
+                itemBuilder: (BuildContext context, int index) {
+                  List<dynamic> taskListCards =
+                      snapshot.data.documents.map((DocumentSnapshot document) {
+                    final String listName = document.data['listName'];
+                    final List<dynamic> tasks = document.data['tasks'] ?? [];
+
+                    return TaskListCard(listName, listColors[index], tasks);
+                  }).toList();
+
+                  return taskListCards[index];
+                });
+          },
         ),
       ),
     );
