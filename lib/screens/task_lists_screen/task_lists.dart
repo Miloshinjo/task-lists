@@ -24,8 +24,9 @@ class TaskLists extends StatelessWidget {
                       snapshot.data.documents.map((DocumentSnapshot document) {
                     final String listName = document.data['listName'];
                     final List<dynamic> tasks = document.data['tasks'] ?? [];
+                    final String id = document.documentID;
 
-                    return TaskListCard(listName, listColors[index], tasks);
+                    return TaskListCard(id, listName, listColors[index], tasks);
                   }).toList();
 
                   return taskListCards[index];
