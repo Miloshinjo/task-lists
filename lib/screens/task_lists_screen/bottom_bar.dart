@@ -30,8 +30,8 @@ class BottomBar extends StatelessWidget {
                       text: '$monthDay $month',
                       style: TextStyle(
                         color: Colors.grey[500],
-                        fontWeight: FontWeight.w500,
-                        fontSize: 18.0,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 20.0,
                         fontFamily: 'Poppins',
                       ),
                     )

@@ -6,6 +6,8 @@ import '../../theme/colors.dart';
 import '../../utils/firestore_utils.dart' as firestore;
 import '../../config/project_limiter.dart' as projectLimiter;
 
+import './validators/add_list.dart';
+
 class AddList extends StatefulWidget {
   @override
   _AddListState createState() => _AddListState();
@@ -14,29 +16,28 @@ class AddList extends StatefulWidget {
 class _AddListState extends State<AddList> {
   String _listName = '';
   String _error;
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  void _onSubmitted(String value) async {
-    setState(() {
-      _listName = value;
-    });
-
-    try {
-      firestore.addDocument('task-lists', {'listName': _listName});
-      setState(() => _error = null);
-      Navigator.pop(context);
-    } catch (e) {
-      print(e);
-      setState(() => _error = '❌ There was an error. Sorry 😢');
+  void _validateAndSubmit() async {
+    final FormState form = _formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      try {
+        firestore.addDocument('task-lists', {'listName': _listName});
+        setState(() => _error = null);
+        Navigator.pop(context);
+      } catch (e) {
+        print(e);
+        setState(() => _error = '❌ There was an error. Sorry 😢');
+      }
     }
   }
-
-  void _onChanged(String value) => setState(() => _listName = value);
 
   void _showDialog() {
     showDialog(
         context: context,
         builder: (BuildContext context) => SimpleDialog(
-              title: Text('Add List'),
+              title: null,
               children: <Widget>[
                 StreamBuilder<Object>(
                     stream:
@@ -70,46 +71,61 @@ class _AddListState extends State<AddList> {
 
                       return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Column(
-                            children: <Widget>[
-                              TextField(
-                                textCapitalization:
-                                    TextCapitalization.sentences,
-                                autofocus: true,
-                                onSubmitted: _onSubmitted,
-                                onChanged: _onChanged,
-                                cursorColor: listColors[_taskListLength],
-                                decoration: InputDecoration(
-                                  errorText: _error,
-                                  border: OutlineInputBorder(),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: listColors[_taskListLength],
-                                        width: 0.0),
-                                  ),
-                                  labelText: 'List Name',
-                                  labelStyle: TextStyle(
-                                      color: listColors[_taskListLength]),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Container(
-                                width: double.infinity,
-                                child: RaisedButton(
-                                  child: Text(
-                                    'Add List',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18.0,
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              children: <Widget>[
+                                TextFormField(
+                                  onSaved: (String value) {
+                                    setState(() {
+                                      _listName = value;
+                                    });
+                                  },
+                                  onFieldSubmitted: (String value) {
+                                    setState(() {
+                                      _listName = value;
+                                    });
+
+                                    _validateAndSubmit();
+                                  },
+                                  validator: AddListValidator.validate,
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  autofocus: true,
+                                  cursorColor: listColors[_taskListLength],
+                                  decoration: InputDecoration(
+                                    errorText: _error,
+                                    border: OutlineInputBorder(),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: listColors[_taskListLength],
+                                          width: 0.0),
+                                    ),
+                                    labelText: 'List Name',
+                                    labelStyle: TextStyle(
+                                      color: listColors[_taskListLength],
                                     ),
                                   ),
-                                  color: listColors[_taskListLength],
-                                  onPressed: () => _onSubmitted(_listName),
                                 ),
-                              )
-                            ],
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                                Container(
+                                  width: double.infinity,
+                                  child: RaisedButton(
+                                    child: Text(
+                                      'Add List',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18.0,
+                                      ),
+                                    ),
+                                    color: listColors[_taskListLength],
+                                    onPressed: _validateAndSubmit,
+                                  ),
+                                )
+                              ],
+                            ),
                           ));
                     })
               ],

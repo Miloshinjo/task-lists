@@ -23,7 +23,6 @@ class TaskListCard extends StatelessWidget {
         ),
       );
     }
-    ;
 
     return Column(
       children:
