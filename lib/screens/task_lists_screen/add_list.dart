@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../theme/colors.dart';
 import '../../utils/firestore_utils.dart' as firestore;
+import '../../config/task_limiter.dart' as projectLimiter;
+import '../../theme/colors.dart';
 
 class AddList extends StatefulWidget {
   @override
@@ -20,11 +23,12 @@ class _AddListState extends State<AddList> {
 
     try {
       firestore.addDocument('task-lists', {'listName': _listName});
+      setState(() => _error = null);
+      Navigator.pop(context);
     } catch (e) {
       print(e);
+      setState(() => _error = '❌ There was an error. Sorry 😢');
     }
-
-    Navigator.pop(context);
   }
 
   void _onChanged(String value) => setState(() => _listName = value);
@@ -33,45 +37,82 @@ class _AddListState extends State<AddList> {
     showDialog(
         context: context,
         builder: (BuildContext context) => SimpleDialog(
-              title: Container(),
+              title: Text('Add List'),
               children: <Widget>[
-                Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Column(
-                      children: <Widget>[
-                        TextField(
-                          autofocus: true,
-                          onSubmitted: _onSubmitted,
-                          onChanged: _onChanged,
-                          cursorColor: purple,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: purple, width: 0.0),
-                            ),
-                            labelText: 'List Name',
-                            labelStyle: TextStyle(color: purple),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          child: RaisedButton(
-                            child: Text(
-                              'Add List',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18.0,
+                StreamBuilder<Object>(
+                    stream:
+                        Firestore.instance.collection('task-lists').snapshots(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (!snapshot.hasData) return CircularProgressIndicator();
+
+                      final _taskListLength = snapshot.data.documents.length;
+
+                      if (_taskListLength >= projectLimiter.taskListsLimit) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Column(
+                            children: <Widget>[
+                              Icon(
+                                Icons.warning,
+                                color: Colors.grey[400],
+                                size: 30.0,
                               ),
-                            ),
-                            color: purple,
-                            onPressed: () => _onSubmitted(_listName),
+                              Text(
+                                'You have reached the maximum limit for making new lists.',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                ),
+                              ),
+                            ],
                           ),
-                        )
-                      ],
-                    ))
+                        );
+                      }
+
+                      return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Column(
+                            children: <Widget>[
+                              TextField(
+                                textCapitalization:
+                                    TextCapitalization.sentences,
+                                autofocus: true,
+                                onSubmitted: _onSubmitted,
+                                onChanged: _onChanged,
+                                cursorColor: listColors[_taskListLength],
+                                decoration: InputDecoration(
+                                  errorText: _error,
+                                  border: OutlineInputBorder(),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: listColors[_taskListLength],
+                                        width: 0.0),
+                                  ),
+                                  labelText: 'List Name',
+                                  labelStyle: TextStyle(
+                                      color: listColors[_taskListLength]),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Container(
+                                width: double.infinity,
+                                child: RaisedButton(
+                                  child: Text(
+                                    'Add List',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18.0,
+                                    ),
+                                  ),
+                                  color: listColors[_taskListLength],
+                                  onPressed: () => _onSubmitted(_listName),
+                                ),
+                              )
+                            ],
+                          ));
+                    })
               ],
             ));
   }
