@@ -34,6 +34,7 @@ class TaskListCard extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
+        maintainState: true,
         builder: (BuildContext context) => TaskListScreen(id, backgroundColor),
       ),
     );

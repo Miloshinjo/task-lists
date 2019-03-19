@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets/logo.dart';
 import './draw_horizontal_line.dart';
 import './bottom_bar.dart';
 import './task_lists.dart';
@@ -14,21 +15,18 @@ class TaskListsScreen extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
+            padding: const EdgeInsets.only(
+              left: 20.0,
+              right: 20.0,
+              top: 50.0,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Icon(
-                  Icons.widgets,
-                  color: Colors.black87,
-                  size: 50.0,
-                ),
-              ],
+              children: <Widget>[Logo()],
             ),
           ),
-          SizedBox(height: 40.0),
+          SizedBox(height: 50.0),
           Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
