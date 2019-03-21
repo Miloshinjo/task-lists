@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import './task_list_card.dart';
-import '../../theme/colors.dart';
+import './task_list_card/task_list_card.dart';
+import '../../../theme/colors.dart';
 
 class TaskLists extends StatelessWidget {
   @override

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../theme/colors.dart';
-import '../../utils/firestore_utils.dart' as firestore;
-import '../../config/project_limiter.dart' as projectLimiter;
+import '../../../theme/colors.dart';
+import '../../../utils/firestore_utils.dart' as firestore;
+import '../../../config/project_limiter.dart' as projectLimiter;
 
 import './validators/add_list.dart';
 

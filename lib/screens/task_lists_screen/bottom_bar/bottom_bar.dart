@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/date_utils.dart' as dateUtils;
+import '../../../utils/date_utils.dart' as dateUtils;
 
 class BottomBar extends StatelessWidget {
   final String weekDay = dateUtils.getWeekdayFull(DateTime.now());

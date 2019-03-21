@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './task.dart';
-import '../task_list_screen/task_list_screen.dart';
+import '../../../task_list_screen/task_list_screen.dart';
 
 class TaskListCard extends StatelessWidget {
   final String listId;
