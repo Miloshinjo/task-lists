@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:task_lists/screens/task_lists_screen/validators/add_list.dart';
+import 'package:task_lists/screens/task_lists_screen/add_list/validators/add_list.dart';
 
 void main() {
   test('empty input returns error string', () {

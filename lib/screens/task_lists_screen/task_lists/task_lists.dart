@@ -14,7 +14,8 @@ class TaskLists extends StatelessWidget {
         child: StreamBuilder(
           stream: Firestore.instance.collection('task-lists').snapshots(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (!snapshot.hasData) return CircularProgressIndicator();
+            if (!snapshot.hasData)
+              return Center(child: CircularProgressIndicator());
 
             return ListView.builder(
                 scrollDirection: Axis.horizontal,

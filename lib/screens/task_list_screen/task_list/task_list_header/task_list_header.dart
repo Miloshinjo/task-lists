@@ -1,11 +1,25 @@
 import 'package:flutter/material.dart';
 
 class TaskListHeader extends StatelessWidget {
+  final String listName;
   final Color mainColor;
   final int tasksCompleted;
   final int tasksCount;
 
-  TaskListHeader(this.mainColor, this.tasksCompleted, this.tasksCount);
+  TaskListHeader(
+    this.listName,
+    this.mainColor,
+    this.tasksCompleted,
+    this.tasksCount,
+  );
+
+  double _circularProgressValue() {
+    if (tasksCount == 0) {
+      return 0;
+    }
+
+    return tasksCompleted / tasksCount;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +35,7 @@ class TaskListHeader extends StatelessWidget {
             height: 20.0,
             child: CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(mainColor),
-              value: tasksCompleted / tasksCount,
+              value: _circularProgressValue(),
               strokeWidth: 3.0,
             ),
           ),
@@ -40,7 +54,7 @@ class TaskListHeader extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'My Tasks',
+                    listName,
                     style:
                         TextStyle(fontSize: 25.0, fontWeight: FontWeight.w600),
                   ),

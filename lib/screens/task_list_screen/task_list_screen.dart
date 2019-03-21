@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/logo.dart';
-import './task_list_header.dart';
+import './top_bar/top_bar.dart';
+import './task_list/task_list.dart';
+import './add_task/add_task.dart';
 
 class TaskListScreen extends StatelessWidget {
   final String listId;
@@ -18,47 +19,12 @@ class TaskListScreen extends StatelessWidget {
       child: Hero(
         tag: listId,
         child: Scaffold(
-          floatingActionButton: InkWell(
-            onTap: () {},
-            splashColor: Colors.white,
-            highlightColor: Colors.white,
-            child: Container(
-              width: 50.0,
-              height: 50.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                color: mainColor,
-              ),
-              child: Icon(
-                Icons.add,
-                size: 20.0,
-                color: Colors.white,
-              ),
-            ),
-          ),
+          floatingActionButton: AddTask(mainColor),
           body: Column(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 20.0,
-                  right: 20.0,
-                  top: 50.0,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    Logo(),
-                    IconButton(
-                      icon: Icon(Icons.close),
-                      iconSize: 32.0,
-                      onPressed: () => Navigator.pop(context),
-                    )
-                  ],
-                ),
-              ),
+              TopBar(),
               SizedBox(height: 50.0),
-              TaskListHeader(mainColor, 3, 7)
+              TaskList(listId, mainColor),
             ],
           ),
         ),
