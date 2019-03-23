@@ -26,13 +26,18 @@ class TaskList extends StatelessWidget {
                 ),
               );
             }
-            String listName = snapshot.data['listName'];
+            final String listName = snapshot.data['listName'];
 
             if (snapshot.data['tasks'] == null) {
               return Expanded(
                 child: Column(
                   children: <Widget>[
-                    TaskListHeader(listName, mainColor, 0, 0),
+                    TaskListHeader(
+                      listName,
+                      mainColor,
+                      0,
+                      0,
+                    ),
                     Center(
                       child: Text('You have no tasks at the moment'),
                     )
@@ -41,9 +46,23 @@ class TaskList extends StatelessWidget {
               );
             }
 
+            final int tasksLength = snapshot.data['tasks'].length;
+            final int tasksCompleted = snapshot.data['tasks']
+                .where((task) => task['completed'] == true)
+                .length;
+
             return Column(
               children: <Widget>[
-                TaskListHeader(listName, mainColor, 3, 7),
+                TaskListHeader(
+                  listName,
+                  mainColor,
+                  tasksCompleted,
+                  tasksLength,
+                ),
+                Container(
+                  color: Colors.black,
+                  child: Column(),
+                )
               ],
             );
           }),
