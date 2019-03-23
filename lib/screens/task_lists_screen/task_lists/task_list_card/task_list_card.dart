@@ -12,6 +12,7 @@ class TaskListCard extends StatelessWidget {
   TaskListCard(this.listId, this.title, this.backgroundColor, this.tasks);
 
   Widget _buildTasksList(List<dynamic> tasks) {
+    // if there is no tasks, show some placeholder UI
     if (tasks.length == 0) {
       return Center(
         child: Text(
@@ -21,6 +22,16 @@ class TaskListCard extends StatelessWidget {
             color: Colors.white,
           ),
         ),
+      );
+    }
+
+    // if List of tasks is longer then 4, show only 4 tasks as max on the UI
+    if (tasks.length > 4) {
+      List<dynamic> shownTasks = tasks.take(4).toList();
+      return Column(
+        children: shownTasks
+            .map((task) => Task(task['body'], task['completed']))
+            .toList(),
       );
     }
 

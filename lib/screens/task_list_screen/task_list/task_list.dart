@@ -29,13 +29,15 @@ class TaskList extends StatelessWidget {
             String listName = snapshot.data['listName'];
 
             if (snapshot.data['tasks'] == null) {
-              return Column(
-                children: <Widget>[
-                  TaskListHeader(listName, mainColor, 0, 0),
-                  Center(
-                    child: Text('You have no tasks at the moment'),
-                  ),
-                ],
+              return Expanded(
+                child: Column(
+                  children: <Widget>[
+                    TaskListHeader(listName, mainColor, 0, 0),
+                    Center(
+                      child: Text('You have no tasks at the moment'),
+                    )
+                  ],
+                ),
               );
             }
 

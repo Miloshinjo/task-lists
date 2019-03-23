@@ -14,16 +14,16 @@ class AddList extends StatefulWidget {
 }
 
 class _AddListState extends State<AddList> {
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _listName = '';
   String _error;
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   void _validateAndSubmit() async {
     final FormState form = _formKey.currentState;
     if (form.validate()) {
       form.save();
       try {
-        firestore.addDocument('task-lists', {'listName': _listName});
+        firestore.addDocument('task-lists', {'tasks': _listName});
         setState(() => _error = null);
         Navigator.pop(context);
       } catch (e) {
@@ -77,14 +77,10 @@ class _AddListState extends State<AddList> {
                               children: <Widget>[
                                 TextFormField(
                                   onSaved: (String value) {
-                                    setState(() {
-                                      _listName = value;
-                                    });
+                                    setState(() => _listName = value);
                                   },
                                   onFieldSubmitted: (String value) {
-                                    setState(() {
-                                      _listName = value;
-                                    });
+                                    setState(() => _listName = value);
 
                                     _validateAndSubmit();
                                   },

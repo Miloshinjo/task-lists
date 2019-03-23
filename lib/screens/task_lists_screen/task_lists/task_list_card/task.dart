@@ -7,7 +7,7 @@ class Task extends StatelessWidget {
   Task(this.body, this.completed);
 
   List<Widget> _buildTask() {
-    if (completed) {
+    if (!completed) {
       return [
         Container(
           margin: EdgeInsets.symmetric(vertical: 10.0),
