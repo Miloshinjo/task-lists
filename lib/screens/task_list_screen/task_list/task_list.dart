@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../../utils/firestore_utils.dart' as firestore;
 
 import './task_list_header/task_list_header.dart';
 import './task/task.dart';
@@ -14,7 +15,18 @@ class TaskList extends StatelessWidget {
   Widget _buildTasks(List<dynamic> tasks) {
     return Column(
       children: tasks
-          .map((task) => Task(task['body'], task['completed'], mainColor))
+          .map(
+            (task) => Dismissible(
+                  key: Key(task['body']),
+                  child: Task(task['body'], task['completed'], mainColor),
+                  background: Container(color: Colors.grey),
+                  onDismissed: (DismissDirection direction) {
+                    print('dissmised!');
+                    firestore.deleteArrayDocument('task-lists', listId,
+                        {'body': task['body'], 'completed': task['completed']});
+                  },
+                ),
+          )
           .toList(),
     );
   }
@@ -37,7 +49,9 @@ class TaskList extends StatelessWidget {
             }
             final String listName = snapshot.data['listName'];
 
-            if (snapshot.data['tasks'] == null) {
+            final List<dynamic> tasks = snapshot.data['tasks'];
+
+            if (tasks == null || tasks.length == 0) {
               return Expanded(
                 child: Column(
                   children: <Widget>[
@@ -55,7 +69,6 @@ class TaskList extends StatelessWidget {
               );
             }
 
-            final List<dynamic> tasks = snapshot.data['tasks'];
             final int tasksCompleted =
                 tasks.where((task) => task['completed'] == true).length;
 

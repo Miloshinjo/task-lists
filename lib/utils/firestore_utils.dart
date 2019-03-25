@@ -14,3 +14,13 @@ void updateArrayDocument(
     'tasks': FieldValue.arrayUnion([fieldData])
   });
 }
+
+void deleteArrayDocument(
+  String collection,
+  String id,
+  Map<String, dynamic> fieldData,
+) {
+  Firestore.instance.collection(collection).document(id).updateData({
+    'tasks': FieldValue.arrayRemove([fieldData])
+  });
+}
