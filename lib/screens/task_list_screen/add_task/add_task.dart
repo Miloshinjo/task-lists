@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../utils/firestore_utils.dart' as firestore;
+import './validators/add_task.dart';
 
 class AddTask extends StatefulWidget {
   final String listId;
@@ -57,11 +58,12 @@ class _AddTaskState extends State<AddTask> {
 
                             _validateAndSubmit();
                           },
+                          validator: AddTaskValidator.validate,
                           textCapitalization: TextCapitalization.sentences,
                           autofocus: true,
                           cursorColor: widget.mainColor,
                           decoration: InputDecoration(
-                            errorText: null,
+                            errorText: _error,
                             border: OutlineInputBorder(),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(

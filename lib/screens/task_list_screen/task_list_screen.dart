@@ -19,6 +19,7 @@ class TaskListScreen extends StatelessWidget {
       child: Hero(
         tag: listId,
         child: Scaffold(
+          resizeToAvoidBottomPadding: false,
           floatingActionButton: AddTask(listId, mainColor),
           body: Column(
             children: <Widget>[

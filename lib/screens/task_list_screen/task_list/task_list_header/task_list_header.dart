@@ -24,7 +24,7 @@ class TaskListHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 30.0),
+      margin: EdgeInsets.only(bottom: 15.0),
       padding: EdgeInsets.only(left: 21.0),
       child: Row(
         mainAxisSize: MainAxisSize.max,

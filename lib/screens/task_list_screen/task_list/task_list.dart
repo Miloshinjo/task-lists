@@ -3,12 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import './task_list_header/task_list_header.dart';
+import './task/task.dart';
 
 class TaskList extends StatelessWidget {
   final String listId;
   final Color mainColor;
 
   TaskList(this.listId, this.mainColor);
+
+  Widget _buildTasks(List<dynamic> tasks) {
+    return Column(
+      children: tasks
+          .map((task) => Task(task['body'], task['completed'], mainColor))
+          .toList(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,28 +56,21 @@ class TaskList extends StatelessWidget {
             }
 
             final List<dynamic> tasks = snapshot.data['tasks'];
-            final int tasksLength = tasks.length;
             final int tasksCompleted =
                 tasks.where((task) => task['completed'] == true).length;
 
-            return Column(
-              children: <Widget>[
-                TaskListHeader(
-                  listName,
-                  mainColor,
-                  tasksCompleted,
-                  tasksLength,
-                ),
-                Container(
-                  height: 400.0,
-                  child: ListView.builder(
-                    itemCount: tasksLength,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Text(tasks[index]['body']);
-                    },
+            return Container(
+              child: Column(
+                children: <Widget>[
+                  TaskListHeader(
+                    listName,
+                    mainColor,
+                    tasksCompleted,
+                    tasks.length,
                   ),
-                ),
-              ],
+                  _buildTasks(tasks),
+                ],
+              ),
             );
           }),
     );

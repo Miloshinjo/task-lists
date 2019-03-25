@@ -21,6 +21,3 @@ void main() {
     expect(result, null);
   });
 }
-
-// if (value.isEmpty) return 'List name can\'t be empty';
-// if (value.length > 15) return 'List name is too long';
