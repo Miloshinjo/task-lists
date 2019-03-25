@@ -17,12 +17,14 @@ class TaskLists extends StatelessWidget {
             if (!snapshot.hasData)
               return Center(child: CircularProgressIndicator());
 
+            final List<DocumentSnapshot> taskLists = snapshot.data.documents;
+
             return ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: snapshot.data.documents.length,
+                itemCount: taskLists.length,
                 itemBuilder: (BuildContext context, int index) {
                   List<dynamic> taskListCards =
-                      snapshot.data.documents.map((DocumentSnapshot document) {
+                      taskLists.map((DocumentSnapshot document) {
                     final String listName = document.data['listName'];
                     final List<dynamic> tasks = document.data['tasks'] ?? [];
                     final String id = document.documentID;

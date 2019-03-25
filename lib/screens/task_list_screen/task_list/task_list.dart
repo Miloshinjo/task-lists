@@ -46,10 +46,10 @@ class TaskList extends StatelessWidget {
               );
             }
 
-            final int tasksLength = snapshot.data['tasks'].length;
-            final int tasksCompleted = snapshot.data['tasks']
-                .where((task) => task['completed'] == true)
-                .length;
+            final List<dynamic> tasks = snapshot.data['tasks'];
+            final int tasksLength = tasks.length;
+            final int tasksCompleted =
+                tasks.where((task) => task['completed'] == true).length;
 
             return Column(
               children: <Widget>[
@@ -60,9 +60,14 @@ class TaskList extends StatelessWidget {
                   tasksLength,
                 ),
                 Container(
-                  color: Colors.black,
-                  child: Column(),
-                )
+                  height: 400.0,
+                  child: ListView.builder(
+                    itemCount: tasksLength,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Text(tasks[index]['body']);
+                    },
+                  ),
+                ),
               ],
             );
           }),
