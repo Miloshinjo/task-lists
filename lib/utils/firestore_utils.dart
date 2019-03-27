@@ -11,9 +11,24 @@ void updateArrayDocument(
   Map<String, dynamic> fieldData,
 ) {
   Firestore.instance.collection(collection).document(id).updateData({
-    'tasks': FieldValue.arrayUnion([fieldData])
+    'tasks': FieldValue.arrayUnion([fieldData]),
   });
 }
+
+void updateDocumentInArrayById(
+  String collection,
+  String id,
+) {
+  print('ddd');
+}
+
+// static void updateDocument(
+//     String collection, String id, Map<String, dynamic> fieldData) {
+//   Firestore.instance
+//       .collection(collection)
+//       .document(id)
+//       .setData(fieldData, merge: true);
+// }
 
 void deleteArrayDocument(
   String collection,

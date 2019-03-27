@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../../../../utils/firestore_utils.dart' as firestore;
+
 class Task extends StatelessWidget {
+  final String listId;
   final String body;
   final bool completed;
   final Color mainColor;
 
-  Task(this.body, this.completed, this.mainColor);
+  Task(this.listId, this.body, this.completed, this.mainColor);
 
   List<Widget> _buildTask() {
     if (!completed) {
@@ -56,12 +59,21 @@ class Task extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: completed ? Colors.grey[200] : null,
-      padding: EdgeInsets.only(top: 15.0, bottom: 15.0, left: 51.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: _buildTask(),
+    return InkWell(
+      onTap: () {
+        print('tapped!');
+        firestore.updateDocumentInArrayById(
+          'task-lists',
+          listId,
+        );
+      },
+      child: Container(
+        color: completed ? Colors.grey[200] : null,
+        padding: EdgeInsets.only(top: 15.0, bottom: 15.0, left: 51.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: _buildTask(),
+        ),
       ),
     );
   }

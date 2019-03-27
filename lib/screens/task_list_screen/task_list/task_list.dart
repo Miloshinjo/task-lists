@@ -18,7 +18,8 @@ class TaskList extends StatelessWidget {
           .map(
             (task) => Dismissible(
                   key: Key(task['body']),
-                  child: Task(task['body'], task['completed'], mainColor),
+                  child:
+                      Task(listId, task['body'], task['completed'], mainColor),
                   background: Container(color: mainColor),
                   direction: DismissDirection.startToEnd,
                   onDismissed: (DismissDirection direction) {

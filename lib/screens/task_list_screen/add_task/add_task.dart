@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:uuid/uuid.dart';
+
 import '../../../utils/firestore_utils.dart' as firestore;
 import './validators/add_task.dart';
 
@@ -24,6 +26,7 @@ class _AddTaskState extends State<AddTask> {
       form.save();
       try {
         Map<String, dynamic> task = {
+          'id': Uuid().v4(),
           'completed': false,
           'body': _taskBody,
         };
