@@ -4,11 +4,22 @@ import '../../../../utils/firestore_utils.dart' as firestore;
 
 class Task extends StatelessWidget {
   final String listId;
+  final String taskId;
   final String body;
   final bool completed;
   final Color mainColor;
 
-  Task(this.listId, this.body, this.completed, this.mainColor);
+  Task(this.listId, this.taskId, this.body, this.completed, this.mainColor);
+
+  void _onTap() {
+    Map<String, dynamic> updatedTask = {
+      'id': taskId,
+      'body': body,
+      'completed': !completed
+    };
+
+    firestore.toggleTaskCompleted(listId, taskId);
+  }
 
   List<Widget> _buildTask() {
     if (!completed) {
@@ -60,13 +71,7 @@ class Task extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        print('tapped!');
-        firestore.updateDocumentInArrayById(
-          'task-lists',
-          listId,
-        );
-      },
+      onTap: _onTap,
       child: Container(
         color: completed ? Colors.grey[200] : null,
         padding: EdgeInsets.only(top: 15.0, bottom: 15.0, left: 51.0),

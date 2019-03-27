@@ -23,7 +23,7 @@ class _AddListState extends State<AddList> {
     if (form.validate()) {
       form.save();
       try {
-        firestore.addDocument('task-lists', {'listName': _listName});
+        firestore.addDocument({'listName': _listName});
         setState(() => _error = null);
         Navigator.pop(context);
       } catch (e) {

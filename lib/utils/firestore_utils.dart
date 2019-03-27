@@ -1,25 +1,38 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-void addDocument(String collection, Map<String, dynamic> document,
-    [String id]) {
-  Firestore.instance.collection(collection).document(id).setData(document);
+void addDocument(Map<String, dynamic> document, [String id]) {
+  Firestore.instance.collection('task-lists').document(id).setData(document);
 }
 
-void updateArrayDocument(
-  String collection,
-  String id,
+void updateTaskDocument(
+  String listId,
   Map<String, dynamic> fieldData,
 ) {
-  Firestore.instance.collection(collection).document(id).updateData({
+  Firestore.instance.collection('task-lists').document(listId).updateData({
     'tasks': FieldValue.arrayUnion([fieldData]),
   });
 }
 
-void updateDocumentInArrayById(
-  String collection,
-  String id,
-) {
-  print('ddd');
+void toggleTaskCompleted(String listId, String taskId) async {
+  DocumentSnapshot list =
+      await Firestore.instance.collection('task-lists').document(listId).get();
+
+  List<dynamic> currentTasks = list['tasks'];
+  List<dynamic> updatedTasks = currentTasks.map((task) {
+    if (task['id'] == taskId) {
+      return {
+        'id': task['id'],
+        'body': task['body'],
+        'completed': !task['completed'],
+      };
+    } else
+      return task;
+  }).toList();
+
+  Firestore.instance
+      .collection('task-lists')
+      .document(listId)
+      .updateData({'tasks': updatedTasks});
 }
 
 // static void updateDocument(
@@ -30,12 +43,11 @@ void updateDocumentInArrayById(
 //       .setData(fieldData, merge: true);
 // }
 
-void deleteArrayDocument(
-  String collection,
-  String id,
+void deleteTaskDocument(
+  String listId,
   Map<String, dynamic> fieldData,
 ) {
-  Firestore.instance.collection(collection).document(id).updateData({
+  Firestore.instance.collection('task-lists').document(listId).updateData({
     'tasks': FieldValue.arrayRemove([fieldData])
   });
 }

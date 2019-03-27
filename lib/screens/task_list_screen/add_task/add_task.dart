@@ -30,7 +30,7 @@ class _AddTaskState extends State<AddTask> {
           'completed': false,
           'body': _taskBody,
         };
-        firestore.updateArrayDocument('task-lists', widget.listId, task);
+        firestore.updateTaskDocument(widget.listId, task);
         setState(() => _error = null);
         Navigator.pop(context);
       } catch (e) {
