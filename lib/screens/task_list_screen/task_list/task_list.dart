@@ -63,20 +63,18 @@ class TaskList extends StatelessWidget {
             final List<dynamic> tasks = snapshot.data['tasks'];
 
             if (tasks == null || tasks.length == 0) {
-              return Expanded(
-                child: Column(
-                  children: <Widget>[
-                    TaskListHeader(
-                      listName,
-                      mainColor,
-                      0,
-                      0,
-                    ),
-                    Center(
-                      child: Text('You have no tasks at the moment'),
-                    )
-                  ],
-                ),
+              return Column(
+                children: <Widget>[
+                  TaskListHeader(
+                    listName,
+                    mainColor,
+                    0,
+                    0,
+                  ),
+                  Center(
+                    child: Text('You have no tasks at the moment'),
+                  )
+                ],
               );
             }
 

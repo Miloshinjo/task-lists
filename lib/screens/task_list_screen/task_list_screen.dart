@@ -15,7 +15,7 @@ class TaskListScreen extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onVerticalDragEnd: (DragEndDetails dragDetails) {
-        if (dragDetails.primaryVelocity > 3000) Navigator.pop(context);
+        if (dragDetails.primaryVelocity > 2000) Navigator.pop(context);
       },
       child: Hero(
         tag: listId,
@@ -26,7 +26,7 @@ class TaskListScreen extends StatelessWidget {
             children: <Widget>[
               TopBar(),
               SizedBox(height: 50.0),
-              TaskList(listId, mainColor),
+              SingleChildScrollView(child: TaskList(listId, mainColor)),
             ],
           ),
         ),
