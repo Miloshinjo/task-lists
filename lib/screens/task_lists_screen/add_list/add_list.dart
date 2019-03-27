@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../theme/colors.dart';
 import '../../../utils/firestore_utils.dart' as firestore;
 import '../../../config/project_limiter.dart' as projectLimiter;
+import '../../../widgets/max_limit_warning.dart';
 
 import './validators/add_list.dart';
 
@@ -48,24 +49,8 @@ class _AddListState extends State<AddList> {
                       final _taskListLength = snapshot.data.documents.length;
 
                       if (_taskListLength >= projectLimiter.taskListsLimit) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Column(
-                            children: <Widget>[
-                              Icon(
-                                Icons.warning,
-                                color: Colors.grey[400],
-                                size: 30.0,
-                              ),
-                              Text(
-                                'You have reached the maximum limit for making new lists.',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                ),
-                              ),
-                            ],
-                          ),
+                        return MaxLimitWarning(
+                          'You have reached the maximum limit for making new lists.',
                         );
                       }
 

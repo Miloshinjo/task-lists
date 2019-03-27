@@ -11,15 +11,7 @@ class Task extends StatelessWidget {
 
   Task(this.listId, this.taskId, this.body, this.completed, this.mainColor);
 
-  void _onTap() {
-    Map<String, dynamic> updatedTask = {
-      'id': taskId,
-      'body': body,
-      'completed': !completed
-    };
-
-    firestore.toggleTaskCompleted(listId, taskId);
-  }
+  void _onTap() => firestore.toggleTaskCompleted(listId, taskId);
 
   List<Widget> _buildTask() {
     if (!completed) {

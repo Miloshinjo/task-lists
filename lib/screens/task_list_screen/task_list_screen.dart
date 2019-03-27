@@ -26,7 +26,7 @@ class TaskListScreen extends StatelessWidget {
             children: <Widget>[
               TopBar(),
               SizedBox(height: 50.0),
-              SingleChildScrollView(child: TaskList(listId, mainColor)),
+              TaskList(listId, mainColor),
             ],
           ),
         ),
