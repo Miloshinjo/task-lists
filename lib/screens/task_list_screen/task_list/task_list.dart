@@ -19,11 +19,15 @@ class TaskList extends StatelessWidget {
             (task) => Dismissible(
                   key: Key(task['body']),
                   child: Task(task['body'], task['completed'], mainColor),
-                  background: Container(color: Colors.grey),
+                  background: Container(color: mainColor),
+                  direction: DismissDirection.startToEnd,
                   onDismissed: (DismissDirection direction) {
-                    print('dissmised!');
-                    firestore.deleteArrayDocument('task-lists', listId,
-                        {'body': task['body'], 'completed': task['completed']});
+                    if (direction == DismissDirection.startToEnd) {
+                      firestore.deleteArrayDocument('task-lists', listId, {
+                        'body': task['body'],
+                        'completed': task['completed']
+                      });
+                    }
                   },
                 ),
           )

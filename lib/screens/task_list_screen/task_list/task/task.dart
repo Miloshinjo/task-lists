@@ -58,7 +58,7 @@ class Task extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: completed ? Colors.grey[200] : null,
-      padding: EdgeInsets.only(top: 12.0, bottom: 12.0, left: 51.0),
+      padding: EdgeInsets.only(top: 15.0, bottom: 15.0, left: 51.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: _buildTask(),

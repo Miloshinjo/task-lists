@@ -13,6 +13,7 @@ class TaskListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onVerticalDragEnd: (DragEndDetails dragDetails) {
         if (dragDetails.primaryVelocity > 3000) Navigator.pop(context);
       },
