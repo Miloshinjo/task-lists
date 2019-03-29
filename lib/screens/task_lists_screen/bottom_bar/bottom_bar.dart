@@ -9,6 +9,18 @@ class BottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const List<String> settingsOptions = <String>['About', 'Help', 'Logout'];
+
+    void _optionsAction(String option) {
+      if (option == 'About') {
+        print('About');
+      } else if (option == 'Subscribe') {
+        print('Subscribe');
+      } else if (option == 'Logout') {
+        print('Logout');
+      }
+    }
+
     return BottomAppBar(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
@@ -38,12 +50,16 @@ class BottomBar extends StatelessWidget {
                   ]),
             ),
             Spacer(),
-            IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.menu,
-                size: 32.0,
-              ),
+            PopupMenuButton<String>(
+              onSelected: _optionsAction,
+              itemBuilder: (BuildContext context) {
+                return settingsOptions.map((String option) {
+                  return PopupMenuItem<String>(
+                    child: Text(option),
+                    value: option,
+                  );
+                }).toList();
+              },
             )
           ],
         ),
