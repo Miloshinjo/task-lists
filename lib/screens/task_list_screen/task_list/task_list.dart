@@ -14,7 +14,7 @@ class TaskList extends StatelessWidget {
 
   TaskList(this.listId, this.listName, this.tasks, this.mainColor);
 
-  Widget _buildTasks(List<dynamic> tasks) {
+  Column _buildTasks(List<dynamic> tasks) {
     return Column(
       children: tasks
           .map(
@@ -41,6 +41,24 @@ class TaskList extends StatelessWidget {
                 ),
           )
           .toList(),
+    );
+  }
+
+  Expanded _buildEmptyContainer(String _listName) {
+    return Expanded(
+      child: Column(
+        children: <Widget>[
+          TaskListHeader(
+            _listName,
+            mainColor,
+            0,
+            0,
+          ),
+          Center(
+            child: Text('You have no tasks at the moment'),
+          )
+        ],
+      ),
     );
   }
 
@@ -71,31 +89,18 @@ class TaskList extends StatelessWidget {
               .snapshots(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (!snapshot.hasData) {
-              final int _tasksCompleted =
+              if (tasks == null || tasks.length == 0)
+                return _buildEmptyContainer(listName);
+              final int tasksCompleted =
                   tasks.where((task) => task['completed'] == true).length;
-              return _buildContainer(listName, _tasksCompleted, tasks);
+              return _buildContainer(listName, tasksCompleted, tasks);
             }
             final String _listName = snapshot.data['listName'];
 
             final List<dynamic> _tasks = snapshot.data['tasks'];
 
-            if (_tasks == null || _tasks.length == 0) {
-              return Expanded(
-                child: Column(
-                  children: <Widget>[
-                    TaskListHeader(
-                      _listName,
-                      mainColor,
-                      0,
-                      0,
-                    ),
-                    Center(
-                      child: Text('You have no tasks at the moment'),
-                    )
-                  ],
-                ),
-              );
-            }
+            if (_tasks == null || _tasks.length == 0)
+              return _buildEmptyContainer(_listName);
 
             final int _tasksCompleted =
                 _tasks.where((task) => task['completed'] == true).length;
