@@ -8,9 +8,11 @@ import './task/task.dart';
 
 class TaskList extends StatelessWidget {
   final String listId;
+  final String listName;
+  final List<dynamic> tasks;
   final Color mainColor;
 
-  TaskList(this.listId, this.mainColor);
+  TaskList(this.listId, this.listName, this.tasks, this.mainColor);
 
   Widget _buildTasks(List<dynamic> tasks) {
     return Column(
@@ -42,6 +44,23 @@ class TaskList extends StatelessWidget {
     );
   }
 
+  Container _buildContainer(
+      String _listName, int _tasksCompleted, List _tasks) {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          TaskListHeader(
+            listName,
+            mainColor,
+            _tasksCompleted,
+            _tasks.length,
+          ),
+          _buildTasks(_tasks),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -52,22 +71,20 @@ class TaskList extends StatelessWidget {
               .snapshots(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (!snapshot.hasData) {
-              return Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(mainColor),
-                ),
-              );
+              final int _tasksCompleted =
+                  tasks.where((task) => task['completed'] == true).length;
+              return _buildContainer(listName, _tasksCompleted, tasks);
             }
-            final String listName = snapshot.data['listName'];
+            final String _listName = snapshot.data['listName'];
 
-            final List<dynamic> tasks = snapshot.data['tasks'];
+            final List<dynamic> _tasks = snapshot.data['tasks'];
 
-            if (tasks == null || tasks.length == 0) {
+            if (_tasks == null || _tasks.length == 0) {
               return Expanded(
                 child: Column(
                   children: <Widget>[
                     TaskListHeader(
-                      listName,
+                      _listName,
                       mainColor,
                       0,
                       0,
@@ -80,22 +97,10 @@ class TaskList extends StatelessWidget {
               );
             }
 
-            final int tasksCompleted =
-                tasks.where((task) => task['completed'] == true).length;
+            final int _tasksCompleted =
+                _tasks.where((task) => task['completed'] == true).length;
 
-            return Container(
-              child: Column(
-                children: <Widget>[
-                  TaskListHeader(
-                    listName,
-                    mainColor,
-                    tasksCompleted,
-                    tasks.length,
-                  ),
-                  _buildTasks(tasks),
-                ],
-              ),
-            );
+            return _buildContainer(_listName, _tasksCompleted, _tasks);
           }),
     );
   }

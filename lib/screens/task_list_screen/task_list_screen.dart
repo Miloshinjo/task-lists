@@ -6,9 +6,11 @@ import './add_task/add_task.dart';
 
 class TaskListScreen extends StatelessWidget {
   final String listId;
+  final String listName;
+  final List<dynamic> tasks;
   final Color mainColor;
 
-  TaskListScreen(this.listId, this.mainColor);
+  TaskListScreen(this.listId, this.listName, this.tasks, this.mainColor);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class TaskListScreen extends StatelessWidget {
             children: <Widget>[
               TopBar(),
               SizedBox(height: 50.0),
-              TaskList(listId, mainColor),
+              TaskList(listId, listName, tasks, mainColor),
             ],
           ),
         ),

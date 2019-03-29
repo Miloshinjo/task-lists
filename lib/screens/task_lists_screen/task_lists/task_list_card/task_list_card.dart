@@ -5,11 +5,11 @@ import '../../../task_list_screen/task_list_screen.dart';
 
 class TaskListCard extends StatelessWidget {
   final String listId;
-  final String title;
+  final String listName;
   final Color backgroundColor;
   final List<dynamic> tasks;
 
-  TaskListCard(this.listId, this.title, this.backgroundColor, this.tasks);
+  TaskListCard(this.listId, this.listName, this.backgroundColor, this.tasks);
 
   Widget _buildTasksList(List<dynamic> tasks) {
     // if there is no tasks, show some placeholder UI
@@ -47,7 +47,7 @@ class TaskListCard extends StatelessWidget {
       MaterialPageRoute(
         maintainState: true,
         builder: (BuildContext context) =>
-            TaskListScreen(listId, backgroundColor),
+            TaskListScreen(listId, listName, tasks, backgroundColor),
       ),
     );
   }
@@ -76,7 +76,7 @@ class TaskListCard extends StatelessWidget {
                     children: <Widget>[
                       Spacer(),
                       Text(
-                        title,
+                        listName,
                         textAlign: TextAlign.start,
                         style: TextStyle(
                           color: Colors.white,
